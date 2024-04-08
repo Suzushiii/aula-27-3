@@ -3,7 +3,9 @@
 
 const produtoService =
 require('../services/produtosService');
+
 const findAll = async (request, response) => {
+  console.log(produtoServiceService);
   const produtos = await produtoService.findAll();
   return response.status(200).json(produtos);
 };

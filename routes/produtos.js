@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
 const express = require('express');
 const router = express.Router();
-const produtoController =
-    require('../controllers/produtoController');
 
 // middlewares
 const nomeMiddleware = require('../middlewares/nomeMiddleware');

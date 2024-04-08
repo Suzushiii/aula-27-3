@@ -2,6 +2,7 @@
 
 const connection = require('../configs/dbConfiguration');
 const findAll = async () => {
+  console.log('teste');
   const clientes = await (await connection)
       .execute('SELECT * FROM clientes');
   return clientes[0];

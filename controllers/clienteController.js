@@ -3,7 +3,9 @@
 
 const clienteService =
 require('../services/clienteService');
+
 const findAll = async (request, response) => {
+  console.log(clienteService);
   const clientes = await clienteService.findAll();
   return response.status(200).json(clientes);
 };
