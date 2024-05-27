@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 const express = require('express');
 const router = express.Router();
+const produtoController =
+    require('../controllers/produtoController');
 
 // middlewares
 const nomeMiddleware = require('../middlewares/nomeMiddleware');
@@ -17,4 +19,5 @@ router.post('/', nomeMiddleware.validateName, descricaoiddleware.validateDesciti
 router.put('/', produtoController.update);
 /* DELETE produtos*/
 router.delete('/:id', produtoController.remove);
+
 module.exports = router;
