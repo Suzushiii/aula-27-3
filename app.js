@@ -18,6 +18,9 @@ const produtosRouter = require('./routes/produtos');
 
 const indexRouter = require('./routes/index');
 
+const nodeCache = require('node-cache');
+
+const cache = new nodeCache();
 
 const app = express();
 
@@ -30,6 +33,29 @@ dotenv.config();
 
 
 // view engine setup
+
+app.get('/clientes', (req, res) => {
+  const chaveCache = 'clientes';
+  const clientesCache = cache.get(chaveCache);
+  if (clientesCache !== undefined) {
+    console.log('Clientes recuperados do cache');
+    res.json(clientesCache);
+  } else {
+    const connection = connectDB();
+    connection.query('SELECT * FROM clientes', (err, results) => {
+      if (err) {
+        console.error('Erro ao buscar clientes:', err);
+        res.status(500).send('Erro interno do servidor');
+      } else {
+        console.log('Clientes recuperados do banco de dados');
+        cache.set(chaveCache, results, 30);
+        res.json(results); // Retorna os clientes
+      }
+    });
+    connection.end();
+  }
+});
+
 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -58,14 +84,14 @@ app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 
 // error handler
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
 
   res.locals.message = err.message;
